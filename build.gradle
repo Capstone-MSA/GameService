@@ -25,11 +25,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+    // developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
     runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.microsoft.sqlserver:mssql-jdbc'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    annotationProcessor('org.projectlombok:lombok')
+    implementation 'org.projectlombok:lombok'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.webjars:stomp-websocket:2.3.4' // (클라이언트 JS 용 – 선택)
+
 }
 
 tasks.named('test') {

@@ -1,0 +1,42 @@
+<!-- templates/score-input.html -->
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
+<div>
+    <h2>Room [[${roomId}]] - 점수 입력</h2>
+    <form id="scoreForm">
+        <input type="number" id="frame" placeholder="Frame (1~10)" />
+        <input type="number" id="round" placeholder="Round (1 or 2)" />
+        <input type="number" id="score" placeholder="Score (0~10)" />
+        <button type="submit">Send Score</button>
+    </form>
+</div>
+
+<script>
+    const roomId = /*[[${roomId}]]*/ 'room123';
+    const userId = /*[[${userId}]]*/ 1;
+    const socket = new SockJS('/ws-bowling');
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, () => {
+        stompClient.subscribe(`/topic/game/${roomId}`, message => {
+            console.log("받은 점수:", JSON.parse(message.body));
+        });
+
+        document.getElementById('scoreForm').addEventListener('submit', e => {
+            e.preventDefault();
+            const frame = +document.getElementById('frame').value;
+            const round = +document.getElementById('round').value;
+            const score = +document.getElementById('score').value;
+
+            stompClient.send(`/app/game/${roomId}/play`, {}, JSON.stringify({
+                matchRoomId: roomId,
+                userId: userId,
+                frame: frame,
+                round: round,
+                score: score
+            }));
+        });
+    });
+</script>

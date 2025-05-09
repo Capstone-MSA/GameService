@@ -1,21 +1,26 @@
+version: '3.8'
+
 services:
   mongodb:
-    image: 'mongo:latest'
+    image: mongo:6.0
+    container_name: mongo-local
     environment:
-      - 'MONGO_INITDB_DATABASE=mydatabase'
-      - 'MONGO_INITDB_ROOT_PASSWORD=secret'
-      - 'MONGO_INITDB_ROOT_USERNAME=root'
+      MONGO_INITDB_DATABASE: bowling_db
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: secret
     ports:
-      - '27017'
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
   redis:
-    image: 'redis:latest'
+    image: redis:latest
+    container_name: redis-local
     ports:
-      - '6379'
-  sqlserver:
-    image: 'mcr.microsoft.com/mssql/server:latest'
-    environment:
-      - 'ACCEPT_EULA=yes'
-      - 'MSSQL_PID=express'
-      - 'MSSQL_SA_PASSWORD=verYs3cret'
-    ports:
-      - '1433'
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  mongo_data:
+  redis_data:
