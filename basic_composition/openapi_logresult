@@ -1,0 +1,28 @@
+C:\Users\d>docker run --rm -v C:/Users/d/Desktop/GameService/basic_composition:/local openapitools/openapi-generator-cli generate -i /local/game-api.yaml -g spring -o /local/out --additional-properties=interfaceOnly=true,feignClients=true,dateLibrary=java8
+[main] INFO  o.o.codegen.DefaultGenerator - Generating with dryRun=false
+[main] INFO  o.o.c.ignore.CodegenIgnoreProcessor - Output directory (/local/out) does not exist, or is inaccessible. No file (.openapi-generator-ignore) will be evaluated.
+[main] INFO  o.o.codegen.DefaultGenerator - OpenAPI Generator: spring (server)
+[main] INFO  o.o.codegen.DefaultGenerator - Generator 'spring' is considered stable.
+[main] INFO  o.o.codegen.languages.SpringCodegen - ----------------------------------
+[main] INFO  o.o.c.languages.AbstractJavaCodegen - Environment variable JAVA_POST_PROCESS_FILE not defined so the Java code may not be properly formatted. To define it, try 'export JAVA_POST_PROCESS_FILE="/usr/local/bin/clang-format -i"' (Linux/Mac)
+[main] INFO  o.o.c.languages.AbstractJavaCodegen - NOTE: To enable file post-processing, 'enablePostProcessFile' must be set to `true` (--enable-post-process-file for CLI).
+[main] WARN  o.o.codegen.DefaultCodegen - Empty operationId found for path: GET /api/scores. Renamed to auto-generated operationId: apiScoresGET
+[main] INFO  o.o.c.languages.AbstractJavaCodegen - Processing operation null
+[main] INFO  o.o.codegen.utils.URLPathUtils - 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[main] INFO  o.o.codegen.utils.URLPathUtils - 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[main] INFO  o.o.codegen.utils.URLPathUtils - 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[main] INFO  o.o.codegen.TemplateManager - writing file /local/out/src/main/java/org/openapitools/model/BowlingScoreResponse.java
+[main] WARN  o.o.codegen.DefaultCodegen - Empty operationId found for path: get /api/scores. Renamed to auto-generated operationId: apiScoresGet
+[main] INFO  o.o.codegen.utils.URLPathUtils - 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[main] INFO  o.o.codegen.TemplateManager - writing file /local/out/src/main/java/org/openapitools/api/ApiApi.java
+[main] INFO  o.o.codegen.utils.URLPathUtils - 'host' (OAS 2.0) or 'servers' (OAS 3.0) not defined in the spec. Default to [http://localhost] for server URL [http://localhost/]
+[main] INFO  o.o.codegen.TemplateManager - writing file /local/out/pom.xml
+[main] INFO  o.o.codegen.TemplateManager - writing file /local/out/README.md
+[main] INFO  o.o.codegen.TemplateManager - writing file /local/out/src/main/java/org/openapitools/api/ApiUtil.java
+[main] INFO  o.o.codegen.TemplateManager - writing file /local/out/.openapi-generator-ignore
+[main] INFO  o.o.codegen.TemplateManager - writing file /local/out/.openapi-generator/VERSION
+[main] INFO  o.o.codegen.TemplateManager - writing file /local/out/.openapi-generator/FILES
+############################################################################################
+# Thanks for using OpenAPI Generator.                                                      #
+# We appreciate your support! Please consider donation to help us maintain this project.   #
+# https://opencollective.com/openapi_generator/donate                                      #

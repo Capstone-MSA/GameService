@@ -19,17 +19,19 @@ public class GamePlayLiveEntity {
     @Id
     private String id;
     private String matchRoomId;
-    private Long userId;
+    private String userId;
     private int frame;
     private int round;
     private int score;
+    private String scoreType;
+    private String scoreStatus;
     private LocalDateTime timestamp = LocalDateTime.now();
 
     @Indexed()  // ✅ TTL: 1시간 후 자동 삭제
     private Date expiredAt;
 
 
-    public GamePlayLiveEntity(String matchRoomId, Long userId, int frame, int round, int score) {
+    public GamePlayLiveEntity(String matchRoomId, String userId, int frame, int round, int score) {
         this.matchRoomId = matchRoomId;
         this.userId = userId;
         this.frame = frame;

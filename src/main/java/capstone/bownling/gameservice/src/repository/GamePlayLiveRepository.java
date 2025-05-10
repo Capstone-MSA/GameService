@@ -8,4 +8,5 @@ import java.util.List;
 public interface GamePlayLiveRepository extends MongoRepository<GamePlayLiveEntity, String> {
     List<GamePlayLiveEntity> findByMatchRoomId(String matchRoomId);
     void deleteByMatchRoomId(String matchRoomId);
+
 }

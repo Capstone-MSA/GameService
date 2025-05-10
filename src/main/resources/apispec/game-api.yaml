@@ -1,0 +1,49 @@
+openapi: 3.0.0
+info:
+  title: Game Service API
+  version: 1.0.0
+
+paths:
+  /api/scores:
+    get:
+      summary: Get game scores by roomId
+      parameters:
+        - name: matchRoomId
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of scores
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BowlingScoreResponse'
+
+components:
+  schemas:
+    BowlingScoreResponse:
+      type: object
+      required:
+        - userId
+        - frameNumber
+        - throwRound
+        - score
+        - scoreType
+        - scoreStatus
+      properties:
+        userId:
+          type: string
+        frameNumber:
+          type: integer
+        throwRound:
+          type: integer
+        score:
+          type: integer
+        scoreType:
+          type: string
+        scoreStatus:
+          type: string

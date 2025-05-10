@@ -1,0 +1,8 @@
+몽고디비 cli 접속
+docker exec -it mongo-local mongosh -u root -p secret --authenticationDatabase admin
+
+redisc cli 접속
+docker exec -it redis-local redis-cli
+
+openapi 실행
+docker run --rm -v C:\Users\d\Desktop\GameService\src\commonmodel:/local openapitools/openapi-generator-cli generate -i /local/game-api.yaml -g spring -o /local/out --additional-properties=interfaceOnly=true,feignClients=true,dateLibrary=java8
