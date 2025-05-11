@@ -6,3 +6,15 @@ docker exec -it redis-local redis-cli
 
 openapi 실행
 docker run --rm -v C:\Users\d\Desktop\GameService\src\commonmodel:/local openapitools/openapi-generator-cli generate -i /local/game-api.yaml -g spring -o /local/out --additional-properties=interfaceOnly=true,feignClients=true,dateLibrary=java8
+
+
+docker build -t adultkim/bowlinggame:latest .
+docker login
+docker push adultkim/bowlinggame:latest
+
+docker run -d -p 8080:8080 --name bowling-game \
+  -e SPRING_PROFILES_ACTIVE=prod \
+  adultkim/bowlingGame:latest
+
+
+docker-compose up -d

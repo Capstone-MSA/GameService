@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.stomp.StompCommand;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
+import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 
 @Component
@@ -24,6 +28,22 @@ public class RedisSubscriber implements MessageListener {
 
         String roomId = channel.replace("game-room:", "");
         GamePlayMessage score = new Gson().fromJson(new String(message.getBody(), StandardCharsets.UTF_8), GamePlayMessage.class);
-        messagingTemplate.convertAndSend("/topic/game/" + roomId, score);
+
+
+        // 현재 노드의 호스트명 가져오기
+        String podName;
+        try {
+            podName = InetAddress.getLocalHost().getHostName();
+        } catch (Exception e) {
+            podName = "unknown";
+        }
+
+        // STOMP 헤더 구성
+        StompHeaderAccessor headerAccessor = StompHeaderAccessor.create(StompCommand.MESSAGE);
+        headerAccessor.setLeaveMutable(true);
+        headerAccessor.setHeader("X-POD-NAME", podName);
+
+        messagingTemplate.convertAndSend("/topic/game/" + roomId,
+                MessageBuilder.createMessage(score, headerAccessor.getMessageHeaders()));
     }
 }

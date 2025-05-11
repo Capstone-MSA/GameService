@@ -19,7 +19,8 @@ public class ScoreController {
 
     @MessageMapping("/game/{roomId}/play")
     public void handleThrow(@DestinationVariable String roomId, GamePlayMessage message) {
-
+        System.out.printf("수신: roomId=%s, userId=%s, frame=%d, round=%d, score=%d%n",
+                roomId, message.getUserId(), message.getFrame(), message.getRound(), message.getScore());
         scoreService.handleThrow(roomId, message);
     }
 }

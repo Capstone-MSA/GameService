@@ -2,25 +2,41 @@ version: '3.8'
 
 services:
   mongodb:
-    image: mongo:6.0
-    container_name: mongo-local
+    image: mongo:latest
     environment:
       MONGO_INITDB_DATABASE: bowling_db
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: secret
     ports:
       - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
 
   redis:
     image: redis:latest
-    container_name: redis-local
     ports:
       - "6379:6379"
-    volumes:
-      - redis_data:/data
 
-volumes:
-  mongo_data:
-  redis_data:
+  game-service:
+    image: adultkim/bowlinggame:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+      - SPRING_DATA_MONGODB_DATABASE=bowling_db
+      - SPRING_DATA_MONGODB_USERNAME=root
+      - SPRING_DATA_MONGODB_PASSWORD=secret
+      - SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE=admin
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+    depends_on:
+      - mongodb
+      - redis
+
+  match-service:
+    image: adultkim/bowlingmatch:latest
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - game-service

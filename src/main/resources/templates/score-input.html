@@ -1,29 +1,58 @@
-<!-- templates/score-input.html -->
+<!-- templates/score-play.html -->
 <meta charset="UTF-8">
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 
 <div>
-    <h2>Room [[${roomId}]] - 점수 입력</h2>
+    <h2>🎯 Room [[${roomId}]] - User [[${userId}]]</h2>
+
+    <!-- 점수 입력 -->
     <form id="scoreForm">
-        <input type="number" id="frame" placeholder="Frame (1~10)" />
-        <input type="number" id="round" placeholder="Round (1 or 2)" />
-        <input type="number" id="score" placeholder="Score (0~10)" />
-        <button type="submit">Send Score</button>
+        <label>Frame: <input type="number" id="frame" placeholder="1~10" required /></label>
+        <label>Round: <input type="number" id="round" placeholder="1~3" required /></label>
+        <label>Score: <input type="number" id="score" placeholder="0~10" required /></label>
+        <button type="submit">점수 전송</button>
     </form>
+
+    <hr/>
+
+    <!-- 점수 확인 -->
+    <div>
+        <h3>📊 실시간 점수</h3>
+        <table border="1" id="scoreTable">
+            <thead>
+            <tr>
+                <th>User</th><th>Frame</th><th>Round</th><th>Score</th>
+            </tr>
+            </thead>
+            <tbody id="scoreBody"></tbody>
+        </table>
+    </div>
 </div>
 
-<script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
     const roomId = /*[[${roomId}]]*/ 'room123';
-    const userId = /*[[${userId}]]*/ 1;
-    const socket = new SockJS('/ws-bowling');
+    const userId = /*[[${userId}]]*/ 0;
+
+    const socket = new SockJS('http://k8s-default-gameserv-0b3930f7de-d6cdbbde94e0c1c7.elb.ap-northeast-2.amazonaws.com/ws-bowling');
     const stompClient = Stomp.over(socket);
 
     stompClient.connect({}, () => {
+        // 구독
         stompClient.subscribe(`/topic/game/${roomId}`, message => {
-            console.log("받은 점수:", JSON.parse(message.body));
+            const data = JSON.parse(message.body);
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${data.userId}</td>
+                <td>${data.frame}</td>
+                <td>${data.round}</td>
+                <td>${data.score}</td>
+            `;
+            document.getElementById('scoreBody').appendChild(row);
         });
 
+        // 전송
         document.getElementById('scoreForm').addEventListener('submit', e => {
             e.preventDefault();
             const frame = +document.getElementById('frame').value;
@@ -37,6 +66,10 @@
                 round: round,
                 score: score
             }));
+
+            // 폼 초기화
+            e.target.reset();
         });
     });
+    /*]]>*/
 </script>
